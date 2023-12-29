@@ -5,7 +5,58 @@ import AVFoundation
 import Utilities
 
 /// Simple audio recorder class, requires a minimum buffer length of 128 samples (.short)
-final class Recorder {
+@MainActor final public class Recorder2 {
+
+    private var tap: Tap?
+
+    var file: AVAudioFile
+
+    public var isPaused = true
+
+    public init(node: Node, file: AVAudioFile) {
+
+        self.file = file
+
+        self.tap = Tap(node) { [weak self] left, right in
+            guard let strongSelf = self else { return }
+            strongSelf.handleTap(left: left, right: right)
+        }
+    }
+
+    func handleTap(left: [Float], right: [Float]) {
+
+        do {
+            if !isPaused {
+
+                let format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
+                let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(left.count))!
+
+                for i in 0..<left.count {
+                    buffer.floatChannelData![0][i] = left[i]
+                    buffer.floatChannelData![1][i] = right[i]
+                }
+
+                buffer.frameLength = buffer.frameCapacity
+
+                print("writing \(left.count) frames to \(file.url)")
+                try file.write(from: buffer)
+
+                print("new length: \(file.length)")
+
+                // allow an optional timed stop
+//                if durationToRecord != 0, file.duration >= durationToRecord {
+//                    stop()
+//                }
+            }
+        } catch let error as NSError {
+            Log("Write failed: error -> \(error.localizedDescription)")
+        }
+    }
+
+}
+
+/// Simple audio recorder class, requires a minimum buffer length of 128 samples (.short)
+@MainActor final public class Recorder {
     // MARK: - Properties
 
     private var tap: Tap?
@@ -78,34 +129,47 @@ final class Recorder {
 
         self.tap = Tap(node) { [weak self] left, right in
             guard let strongSelf = self else { return }
-            guard let internalAudioFile = strongSelf.internalAudioFile else { return }
+            strongSelf.handleTap(left: left, right: right)
+        }
+    }
 
-            do {
-                if !strongSelf.isPaused {
+    func handleTap(left: [Float], right: [Float]) {
 
-                    let format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
-                    let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(left.count))!
+        guard let file = internalAudioFile else { return }
 
-                    for i in 0..<left.count {
-                        buffer.floatChannelData![0][i] = left[i]
-                        buffer.floatChannelData![1][i] = right[i]
-                    }
+        do {
+            if !isPaused {
 
-                    try internalAudioFile.write(from: buffer)
+                let format = AVAudioFormat(standardFormatWithSampleRate: 44100, channels: 2)!
+                let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(left.count))!
 
-                    // allow an optional timed stop
-                    if strongSelf.durationToRecord != 0, internalAudioFile.duration >= strongSelf.durationToRecord {
-                        strongSelf.stop()
-                    }
+                for i in 0..<left.count {
+                    buffer.floatChannelData![0][i] = left[i]
+                    buffer.floatChannelData![1][i] = right[i]
                 }
-            } catch let error as NSError {
-                Log("Write failed: error -> \(error.localizedDescription)")
+
+                buffer.frameLength = buffer.frameCapacity
+
+                try file.write(from: buffer)
+
+                // allow an optional timed stop
+                if durationToRecord != 0, file.duration >= durationToRecord {
+                    stop()
+                }
             }
+        } catch let error as NSError {
+            Log("Write failed: error -> \(error.localizedDescription)")
         }
     }
 
     deinit {
-        if shouldCleanupRecordings { Recorder.removeRecordedFiles() }
+        if shouldCleanupRecordings {
+            Task {
+                await MainActor.run {
+                    Recorder.removeRecordedFiles()
+                }
+            }
+        }
     }
 
     // MARK: - Methods

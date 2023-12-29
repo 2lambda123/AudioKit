@@ -1,6 +1,8 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.9
 
 import PackageDescription
+
+let concurrency: SwiftSetting = .unsafeFlags(["-Xfrontend", "-strict-concurrency=complete"])
 
 let package = Package(
     name: "AudioKit",
@@ -12,16 +14,27 @@ let package = Package(
     ],
     targets: [
         .target(name: "AudioKit",
-                dependencies: ["Audio", "AudioFiles", "Utilities", "MIDI", "Taps"]),
+                dependencies: ["Audio", "AudioFiles", "Utilities", "MIDI", "Taps"],
+                swiftSettings: [concurrency]),
         .target(name: "Audio",
-                dependencies: ["MIDI", "Utilities", .product(name: "Atomics", package: "swift-atomics")],
+                dependencies: ["MIDI", "Utilities", "CAudio", .product(name: "Atomics", package: "swift-atomics")],
                 swiftSettings: [
-                    .unsafeFlags(["-Xfrontend", "-warn-long-expression-type-checking=50"])
+                    .unsafeFlags(["-Xfrontend", "-warn-long-expression-type-checking=50"]),
+                    concurrency
                 ]),
-        .target(name: "AudioFiles", dependencies: ["Utilities"]),
-        .target(name: "Utilities"),
-        .target(name: "MIDI", dependencies: ["Utilities", .product(name: "MIDIKit", package: "MIDIKit")]),
-        .target(name: "Taps", dependencies: ["Audio"]),
+        .target(name: "CAudio"),
+        .target(name: "AudioFiles",
+                dependencies: ["Utilities"],
+                swiftSettings: [concurrency]),
+        .target(name: "Utilities",
+                swiftSettings: [concurrency]),
+        .target(name: "MIDI",
+                dependencies: ["Utilities",.product(name: "MIDIKit", package: "MIDIKit")],
+                swiftSettings: [concurrency]),
+        .target(name: "Taps",
+                dependencies: ["Audio"],
+                swiftSettings: [concurrency]),
         .testTarget(name: "AudioKitTests", dependencies: ["AudioKit"], resources: [.copy("TestResources/")]),
-    ]
+    ],
+    cxxLanguageStandard: .cxx20
 )

@@ -18,25 +18,10 @@ public class EngineAudioUnit: AUAudioUnit {
 
     var cachedMIDIBlock: AUScheduleMIDIEventBlock?
 
-    public static var instanceCount = ManagedAtomic(0)
+    public static let instanceCount = ManagedAtomic(0)
 
     override public var channelCapabilities: [NSNumber]? {
         return [inputChannelCount, outputChannelCount]
-    }
-
-    struct WeakEngineAU {
-        weak var engine: EngineAudioUnit?
-    }
-
-    static var nodeEnginesLock = NSLock()
-
-    /// So we can look up the engine associated with a node.
-    static var nodeEngines: [ObjectIdentifier: WeakEngineAU] = [:]
-
-    static func getEngine(for node: Node) -> EngineAudioUnit? {
-        nodeEnginesLock.withLock {
-            EngineAudioUnit.nodeEngines[.init(node)]?.engine
-        }
     }
 
     /// Initialize with component description and options
@@ -215,19 +200,17 @@ public class EngineAudioUnit: AUAudioUnit {
 
             for node in list {
 
-                Self.nodeEnginesLock.withLock {
-                    Self.nodeEngines[.init(node)] = .init(engine: self)
-                }
+                NodeEnginesManager.shared.set(engine: self, for: node)
 
                 // Activate input busses.
-                for busIndex in 0 ..< node.au.inputBusses.count {
-                    let bus = node.au.inputBusses[busIndex]
+                for busIndex in 0 ..< node.auAudioUnit.inputBusses.count {
+                    let bus = node.auAudioUnit.inputBusses[busIndex]
                     try! bus.setFormat(format)
                     bus.isEnabled = true
                 }
 
-                if !node.au.renderResourcesAllocated {
-                    try! node.au.allocateRenderResources()
+                if !node.auAudioUnit.renderResourcesAllocated {
+                    try! node.auAudioUnit.allocateRenderResources()
                 }
 
                 let nodeBuffer = buffers[ObjectIdentifier(node)]!
@@ -264,7 +247,7 @@ public class EngineAudioUnit: AUAudioUnit {
                     }
 
                     let job = RenderJob(outputBuffer: nodeBuffer,
-                                        renderBlock: node.au.renderBlock,
+                                        renderBlock: node.auAudioUnit.renderBlock,
                                         inputBlock: inputBlock,
                                         inputIndices: node.connections.map { nodeJobs[ObjectIdentifier($0)]! })
 
@@ -272,7 +255,7 @@ public class EngineAudioUnit: AUAudioUnit {
                 }
 
                 // Add render jobs for taps.
-                for tap in Tap2.getTapsFor(node: node) {
+                for tap in TapRegistry.shared.getTapsFor(node: node) {
 
                     // We don't actually care about this output buffer. Perhaps
                     // there's a better way to express this?

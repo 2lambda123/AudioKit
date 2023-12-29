@@ -7,7 +7,7 @@ import Utilities
 /// AudioKit version of Apple's ParametricEQ Audio Unit
 ///
 public class ParametricEQ: Node {
-    public var au: AUAudioUnit
+    public var auAudioUnit: AUAudioUnit
 
     let input: Node
 
@@ -69,16 +69,16 @@ public class ParametricEQ: Node {
         self.input = input
 
         let desc = AudioComponentDescription(appleEffect: kAudioUnitSubType_ParametricEQ)
-        au = instantiateAU(componentDescription: desc)
-        associateParams(with: au)
+        auAudioUnit = instantiateAU(componentDescription: desc)
+        associateParams(with: auAudioUnit)
 
         self.centerFreq = centerFreq
         self.q = q
         self.gain = gain
-        Engine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
     }
 
     deinit {
-        Engine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
     }
 }

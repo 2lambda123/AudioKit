@@ -14,9 +14,9 @@ class FFTTapTests: AKTestCase {
     }
 
     func testFFT() {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let oscillator = Oscillator()
+        let oscillator = TestOscillator()
         let mixer = Mixer(oscillator)
 
         var fftData: [Int] = []
@@ -43,7 +43,7 @@ class FFTTapTests: AKTestCase {
             }
         }
 
-        engine.output = tap
+        engine.output = mixer
 
         let audio = engine.startTest(totalDuration: 10.0)
         for targetFrequency in targetFrequencies {
@@ -52,6 +52,8 @@ class FFTTapTests: AKTestCase {
         }
 
         wait(for: [expect], timeout: 10.0)
+        engine.stop()
+        XCTAssertNotNil(tap)
         check(values: fftData, known: expectedBuckets)
     }
 
@@ -61,9 +63,9 @@ class FFTTapTests: AKTestCase {
         return
         let paddingFactor = 7
 
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let oscillator = Oscillator()
+        let oscillator = TestOscillator()
 
         var fftData: [Int] = []
 
@@ -86,7 +88,7 @@ class FFTTapTests: AKTestCase {
                 }
             }
         }
-        engine.output = tap
+        engine.output = oscillator
 
         let audio = engine.startTest(totalDuration: 10.0)
         for targetFrequency in targetFrequencies {
@@ -95,7 +97,8 @@ class FFTTapTests: AKTestCase {
         }
 
         wait(for: [expect], timeout: 10.0)
-
+        engine.stop()
+        XCTAssertNotNil(tap)
         check(values: fftData, known: expectedBuckets)
     }
 }

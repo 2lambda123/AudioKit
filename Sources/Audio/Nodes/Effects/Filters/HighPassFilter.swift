@@ -7,7 +7,7 @@ import Utilities
 /// AudioKit version of Apple's HighPassFilter Audio Unit
 ///
 public class HighPassFilter: Node {
-    public var au: AUAudioUnit
+    public var auAudioUnit: AUAudioUnit
 
     let input: Node
 
@@ -54,15 +54,15 @@ public class HighPassFilter: Node {
         self.input = input
 
         let desc = AudioComponentDescription(appleEffect: kAudioUnitSubType_HighPassFilter)
-        au = instantiateAU(componentDescription: desc)
-        associateParams(with: au)
+        auAudioUnit = instantiateAU(componentDescription: desc)
+        associateParams(with: auAudioUnit)
 
         self.cutoffFrequency = cutoffFrequency
         self.resonance = resonance
-        Engine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
     }
 
     deinit {
-        Engine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
     }
 }

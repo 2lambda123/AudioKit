@@ -13,7 +13,7 @@ import Utilities
 open class AppleSampler: Node {
     // MARK: - Properties
 
-    public var au: AUAudioUnit
+    public var auAudioUnit: AUAudioUnit
 
     private var _audioFiles: [AVAudioFile] = []
 
@@ -65,12 +65,12 @@ open class AppleSampler: Node {
 
     /// Initialize the sampler node
     public init() {
-        au = samplerUnit.auAudioUnit
-        Engine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
+        auAudioUnit = samplerUnit.auAudioUnit
+        AudioEngine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
     }
 
     deinit {
-        Engine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
     }
 
     // Add URL based initializers

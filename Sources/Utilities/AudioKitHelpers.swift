@@ -25,6 +25,9 @@ public typealias MIDIChannel = UInt8
 /// Sample type alias making it clear when you're working with samples
 public typealias SampleIndex = UInt32
 
+/// BPM (for backwards compatibility)
+public typealias BPM = Double
+
 /// Note on shortcut
 public let noteOnByte: MIDIByte = 0x90
 /// Note off shortcut
@@ -371,11 +374,11 @@ public extension DSPSplitComplex {
     init(repeating initialValue: Float, count: Int) {
         let real = [Float](repeating: initialValue, count: count)
         let realp = UnsafeMutablePointer<Float>.allocate(capacity: real.count)
-        realp.assign(from: real, count: real.count)
+        realp.update(from: real, count: real.count)
 
         let imag = [Float](repeating: initialValue, count: count)
         let imagp = UnsafeMutablePointer<Float>.allocate(capacity: imag.count)
-        imagp.assign(from: imag, count: imag.count)
+        imagp.update(from: imag, count: imag.count)
 
         self.init(realp: realp, imagp: imagp)
     }
@@ -389,11 +392,11 @@ public extension DSPSplitComplex {
     init(repeatingReal: Float, repeatingImag: Float, count: Int) {
         let real = [Float](repeating: repeatingReal, count: count)
         let realp = UnsafeMutablePointer<Float>.allocate(capacity: real.count)
-        realp.assign(from: real, count: real.count)
+        realp.update(from: real, count: real.count)
 
         let imag = [Float](repeating: repeatingImag, count: count)
         let imagp = UnsafeMutablePointer<Float>.allocate(capacity: imag.count)
-        imagp.assign(from: imag, count: imag.count)
+        imagp.update(from: imag, count: imag.count)
 
         self.init(realp: realp, imagp: imagp)
     }

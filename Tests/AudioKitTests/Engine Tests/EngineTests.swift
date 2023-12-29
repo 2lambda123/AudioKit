@@ -5,9 +5,9 @@ import XCTest
 
 class EngineTests: AKTestCase {
     func testBasic() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
 
         engine.output = osc
 
@@ -18,9 +18,9 @@ class EngineTests: AKTestCase {
     }
 
     func testEffect() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         let fx = Distortion(osc)
 
         engine.output = fx
@@ -32,9 +32,9 @@ class EngineTests: AKTestCase {
     }
 
     func testTwoEffects() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         let dist = Distortion(osc)
         let dyn = PeakLimiter(dist)
 
@@ -48,9 +48,9 @@ class EngineTests: AKTestCase {
 
     /// Test changing the output chain on the fly.
     func testDynamicChange() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         let dist = Distortion(osc)
 
         engine.output = osc
@@ -67,10 +67,10 @@ class EngineTests: AKTestCase {
     }
 
     func testMixer() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
         osc2.frequency = 466.16 // dissonance, so we can really hear it
 
         let mix = Mixer([osc1, osc2])
@@ -84,10 +84,10 @@ class EngineTests: AKTestCase {
     }
 
     func testMixerVolume() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
         osc2.frequency = 466.16 // dissonance, so we can really hear it
 
         let mix = Mixer([osc1, osc2])
@@ -103,10 +103,10 @@ class EngineTests: AKTestCase {
     }
 
     func testMixerDynamic() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
         osc2.frequency = 466.16 // dissonance, so we can really hear it
 
         let mix = Mixer([osc1])
@@ -136,8 +136,8 @@ class EngineTests: AKTestCase {
         ]
 
         for volume in [0.0, 0.1, 0.5, 0.8, 1.0, 2.0] {
-            let engine = Engine()
-            let osc = Oscillator()
+            let engine = AudioEngine()
+            let osc = TestOscillator()
             let mix = Mixer(osc)
             mix.volume = AUValue(volume)
             engine.output = mix
@@ -163,9 +163,9 @@ class EngineTests: AKTestCase {
         ]
 
         for pan in [-0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 0.75] {
-            let engine = Engine()
-            let oscL = Oscillator()
-            let oscR = Oscillator()
+            let engine = AudioEngine()
+            let oscL = TestOscillator()
+            let oscR = TestOscillator()
             oscR.frequency = 500
             let mixL = Mixer(oscL)
             let mixR = Mixer(oscR)
@@ -183,10 +183,10 @@ class EngineTests: AKTestCase {
 
     /// Test some number of changes so schedules are released.
     func testMultipleChanges() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
 
         osc1.frequency = 880
 
@@ -218,8 +218,8 @@ class EngineTests: AKTestCase {
     }
 
     func testOscillator() {
-        let engine = Engine()
-        let osc = Oscillator()
+        let engine = AudioEngine()
+        let osc = TestOscillator()
         engine.output = osc
         let audio = engine.startTest(totalDuration: 2.0)
         audio.append(engine.render(duration: 2.0))
@@ -239,12 +239,12 @@ class EngineTests: AKTestCase {
     }
 
     func testManyOscillatorsPerf() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
         let mixer = Mixer()
 
         for _ in 0 ..< 20 {
-            let osc = Oscillator()
+            let osc = TestOscillator()
             mixer.addInput(osc)
         }
 

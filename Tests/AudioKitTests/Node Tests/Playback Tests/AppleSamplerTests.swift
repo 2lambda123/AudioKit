@@ -10,7 +10,7 @@ class AppleSamplerTests: AKTestCase {
 
     func testSamplePlayback() throws {
         let sampler = AppleSampler()
-        let engine = Engine()
+        let engine = AudioEngine()
         let sampleURL = Bundle.module.url(forResource: "TestResources/sinechirp", withExtension: "wav")!
         let audioFile = try AVAudioFile(forReading: sampleURL)
         try sampler.loadAudioFile(audioFile)
@@ -24,7 +24,7 @@ class AppleSamplerTests: AKTestCase {
 
     func testStop() throws {
         let sampler = AppleSampler()
-        let engine = Engine()
+        let engine = AudioEngine()
         let sampleURL = Bundle.module.url(forResource: "TestResources/sinechirp", withExtension: "wav")!
         let audioFile = try AVAudioFile(forReading: sampleURL)
         try sampler.loadAudioFile(audioFile)
@@ -42,7 +42,7 @@ class AppleSamplerTests: AKTestCase {
 
     func testVolume() throws {
         let sampler = AppleSampler()
-        let engine = Engine()
+        let engine = AudioEngine()
         let sampleURL = Bundle.module.url(forResource: "TestResources/sinechirp", withExtension: "wav")!
         let audioFile = try AVAudioFile(forReading: sampleURL)
         try sampler.loadAudioFile(audioFile)
@@ -57,7 +57,7 @@ class AppleSamplerTests: AKTestCase {
 
     func testPan() throws {
         let sampler = AppleSampler()
-        let engine = Engine()
+        let engine = AudioEngine()
         let sampleURL = Bundle.module.url(forResource: "TestResources/sinechirp", withExtension: "wav")!
         let audioFile = try AVAudioFile(forReading: sampleURL)
         try sampler.loadAudioFile(audioFile)
@@ -72,7 +72,7 @@ class AppleSamplerTests: AKTestCase {
 
     func testAmplitude() throws {
         let sampler = AppleSampler()
-        let engine = Engine()
+        let engine = AudioEngine()
         let sampleURL = Bundle.module.url(forResource: "TestResources/sinechirp", withExtension: "wav")!
         let audioFile = try AVAudioFile(forReading: sampleURL)
         try sampler.loadAudioFile(audioFile)
@@ -87,11 +87,12 @@ class AppleSamplerTests: AKTestCase {
 
     // Repro case.
     func testLoadEXS24_bug() throws {
-        throw XCTSkip("Repro case")
         let engine = AVAudioEngine()
         let samplerUnit = AVAudioUnitSampler()
         engine.attach(samplerUnit)
         let exsURL = Bundle.module.url(forResource: "TestResources/Sampler Instruments/sawPiano1", withExtension: "exs")!
+        let mgr = FileManager.default
+        XCTAssertTrue(mgr.fileExists(atPath: exsURL.path))
         try samplerUnit.loadInstrument(at: exsURL)
     }
 }

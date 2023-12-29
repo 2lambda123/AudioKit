@@ -5,9 +5,9 @@ import XCTest
 
 class EngineRealtimeTests: AKTestCase {
     func testBasicRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         osc.amplitude = 0.1
 
         engine.output = osc
@@ -17,9 +17,9 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testEffectRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         let fx = Distortion(osc)
 
         engine.output = fx
@@ -32,9 +32,9 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testTwoEffectsRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         let dist = Distortion(osc)
         let rev = Distortion(dist)
 
@@ -49,9 +49,9 @@ class EngineRealtimeTests: AKTestCase {
 
     /// Test changing the output chain on the fly.
     func testDynamicChangeRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc = Oscillator()
+        let osc = TestOscillator()
         let dist = Distortion(osc)
 
         engine.output = osc
@@ -67,10 +67,10 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testMixerRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
         osc2.frequency = 466.16 // dissonance, so we can really hear it
 
         let mix = Mixer([osc1, osc2])
@@ -86,10 +86,10 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testMixerDynamicRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
         osc2.frequency = 466.16 // dissonance, so we can really hear it
 
         let mix = Mixer([osc1])
@@ -109,10 +109,10 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testMultipleChangesRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
-        let osc1 = Oscillator()
-        let osc2 = Oscillator()
+        let osc1 = TestOscillator()
+        let osc2 = TestOscillator()
 
         osc1.frequency = 880
 
@@ -130,7 +130,7 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testSamplerRealtime() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
         let url = URL.testAudio
         let buffer = try! AVAudioPCMBuffer(url: url)!
         let sampler = Sampler()
@@ -143,12 +143,12 @@ class EngineRealtimeTests: AKTestCase {
     }
 
     func testManyOscillators() throws {
-        let engine = Engine()
+        let engine = AudioEngine()
 
         let mixer = Mixer()
 
         for _ in 0 ..< 100 {
-            let osc = Oscillator()
+            let osc = TestOscillator()
             mixer.addInput(osc)
         }
 

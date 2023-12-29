@@ -9,7 +9,7 @@ import Utilities
 /// AudioKit version of Apple's Reverb Audio Unit
 ///
 public class MatrixReverb: Node {
-    public var au: AUAudioUnit
+    public var auAudioUnit: AUAudioUnit
 
     let input: Node
 
@@ -204,7 +204,7 @@ public class MatrixReverb: Node {
     public func loadFactoryPreset(_ preset: ReverbPreset) {
         let auPreset = AUAudioUnitPreset()
         auPreset.number = preset.rawValue
-        au.currentPreset = auPreset
+        auAudioUnit.currentPreset = auPreset
     }
 
     /// Initialize the reverb node
@@ -232,8 +232,8 @@ public class MatrixReverb: Node {
         self.input = input
 
         let desc = AudioComponentDescription(appleEffect: kAudioUnitSubType_MatrixReverb)
-        au = instantiateAU(componentDescription: desc)
-        associateParams(with: au)
+        auAudioUnit = instantiateAU(componentDescription: desc)
+        associateParams(with: auAudioUnit)
 
         self.dryWetMix = dryWetMix
         self.smallLargeMix = smallLargeMix
@@ -249,11 +249,11 @@ public class MatrixReverb: Node {
         self.smallDelayRange = smallDelayRange
         self.modulationRate = modulationRate
         self.modulationDepth = modulationDepth
-        Engine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
     }
 
     deinit {
-        Engine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
     }
 }
 

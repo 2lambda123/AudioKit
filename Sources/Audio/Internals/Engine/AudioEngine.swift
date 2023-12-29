@@ -7,11 +7,11 @@ import Utilities
 /// New audio engine to mostly replace AVAudioEngine. Eventually we will completely replace AVAudioEngine.
 ///
 /// See https://github.com/AudioKit/AudioKit/issues/2804
-public class Engine {
+public class AudioEngine {
     /// Internal AVAudioEngine
     private let avEngine = AVAudioEngine()
 
-    public static var nodeInstanceCount = ManagedAtomic(0)
+    public static let nodeInstanceCount = ManagedAtomic(0)
 
     public var output: Node? {
         didSet {

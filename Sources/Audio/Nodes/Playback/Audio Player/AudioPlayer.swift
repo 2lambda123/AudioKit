@@ -6,7 +6,7 @@ public final class AudioPlayer: Node {
     public var connections: [Node] { [] }
 
     // MARK: - Properties
-    public var au: AUAudioUnit
+    public var auAudioUnit: AUAudioUnit
 
     let playerAU: AudioPlayerAudioUnit
 
@@ -62,17 +62,17 @@ public final class AudioPlayer: Node {
                                      as: componentDescription,
                                      name: "Audio Player AU",
                                      version: .max)
-        au = instantiateAU(componentDescription: componentDescription)
-        playerAU = au as! AudioPlayerAudioUnit
+        auAudioUnit = instantiateAU(componentDescription: componentDescription)
+        playerAU = auAudioUnit as! AudioPlayerAudioUnit
         self.rate = rate
         self.pitch = pitch
         self.overlap = overlap
 
-        Engine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
     }
 
     deinit {
-        Engine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
     }
 
     public func play(url: URL) {

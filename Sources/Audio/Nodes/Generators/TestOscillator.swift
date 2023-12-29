@@ -4,14 +4,14 @@ import AudioUnit
 import AVFoundation
 import Utilities
 
-enum OscillatorCommand {
+enum TestOscillatorCommand {
     case table(UnsafeMutablePointer<Vec<Float>>?)
 }
 
-public class Oscillator: Node {
+public class TestOscillator: Node {
     public let connections: [Node] = []
 
-    public let au: AUAudioUnit
+    public let auAudioUnit: AUAudioUnit
 
     let oscAU: OscillatorAudioUnit
 
@@ -51,8 +51,8 @@ public class Oscillator: Node {
                                      as: componentDescription,
                                      name: "Oscillator AU",
                                      version: .max)
-        au = instantiateAU(componentDescription: componentDescription)
-        oscAU = au as! OscillatorAudioUnit
+        auAudioUnit = instantiateAU(componentDescription: componentDescription)
+        oscAU = auAudioUnit as! OscillatorAudioUnit
         self.waveform = waveform
         oscAU.amplitudeParam.value = amplitude
         self.amplitude = amplitude
@@ -60,10 +60,10 @@ public class Oscillator: Node {
         self.frequency = frequency
         oscAU.setWaveform(waveform)
         self.waveform = waveform
-        Engine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingIncrement(ordering: .relaxed)
     }
 
     deinit {
-        Engine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
+        AudioEngine.nodeInstanceCount.wrappingDecrement(ordering: .relaxed)
     }
 }
