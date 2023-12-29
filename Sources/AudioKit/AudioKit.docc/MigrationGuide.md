@@ -2,9 +2,9 @@
 
 ## AudioKit 5 to 6
 
-The major change with AudioKit 6 is wer eare using our own audio engine, `Engine` instead of using `AudioEngine` which used `AVAudioEngine` for all the node connections. In this change, a few things were deleted, and a few things were changed. 
+The major change with AudioKit 6 is wer eare using our own audio engine, `Engine` instead of using `AudioEngine` which used `AVAudioEngine` for all the node connections. In this change, a few things were deleted, and a few things were changed.
 
-Taps are now done with a `Tap` node inserted into your signal chain as opposed to installing taps anywhere.  Now instead of tapping nodes with different kinds of taps, you just run functions on the data supplied by a given tap node to do whatever kind of analysis you need.
+Taps are now done with a `Tap` node inserted into your signal chain as opposed to installing taps anywhere. Now instead of tapping nodes with different kinds of taps, you just run functions on the data supplied by a given tap node to do whatever kind of analysis you need.
 
 ## AudioKit 5.4 to 5.5
 
@@ -16,30 +16,29 @@ The interface to AppleSampler was update to be more safe.
 
 ## AudioKit 5.2 to 5.3
 
-AudioKit 5.3 is a Swift-only package, so it should be usable on iPad's Swift Playgrounds app.  To allow for this, AudioKitEX has been moved to its own package, so you will likely have to update your package dependencies to also include AudioKitEX. 
-
+AudioKit 5.3 is a Swift-only package, so it should be usable on iPad's Swift Playgrounds app. To allow for this, AudioKitEX has been moved to its own package, so you will likely have to update your package dependencies to also include AudioKitEX.
 
 ## AudioKit 5.1 to 5.2
 
 This version update involves separating AudioKit into separate Sub-AudioKits which are included as separate Swift Packages. This way, developers do not have to compile code that their apps don't require. Most users will probably have to include the SoundpipeAudioKit package since that is the one that contained many of the oscillators, effects, and filters. In addition to including the packages, developers may also have to update their files to import the correct frameworks.
 
-Also, please note that some types that did not move into a new *package* still moved into a new *module*. For example, `Sequencer` lives in the base AudioKit package, but code that references it will need to import the `AudioKitEX` module that is included in that package.
+Also, please note that some types that did not move into a new _package_ still moved into a new _module_. For example, `Sequencer` lives in the base AudioKit package, but code that references it will need to import the `AudioKitEX` module that is included in that package.
 
 Here is a list of types that moved into a new package, and where they live now.
 
-| Class                              | New Framework     |
-|------------------------------------|-------------------|
-| CallbackInstrument                 | AudioKitEX        |
-| Fader                              | AudioKitEX        |
-| StereoFieldLimiter                 | AudioKitEX        |
-| DynaRageCompressor                 | DevoloopAudioKit  |
-| RhinoGuitarProcessor               | DevoloopAudioKit  |
-| Flanger                            | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)      |
-| Chorus                             | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)      |
-| Sampler                            | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)      |
-| StereoDelay                        | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)      |
-| Synth                              | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)      |
-| TransientShaper                    | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)      |
+| Class                              | New Framework                                               |
+| ---------------------------------- | ----------------------------------------------------------- |
+| CallbackInstrument                 | AudioKitEX                                                  |
+| Fader                              | AudioKitEX                                                  |
+| StereoFieldLimiter                 | AudioKitEX                                                  |
+| DynaRageCompressor                 | DevoloopAudioKit                                            |
+| RhinoGuitarProcessor               | DevoloopAudioKit                                            |
+| Flanger                            | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)         |
+| Chorus                             | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)         |
+| Sampler                            | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)         |
+| StereoDelay                        | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)         |
+| Synth                              | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)         |
+| TransientShaper                    | [DunneAudioKit](https://audiokit.io/DunneAudioKit/)         |
 | DryWetMixer                        | [SoundpipeAudioKit](https://audiokit.io/SoundpipeAudioKit/) |
 | BrownianNoise                      | [SoundpipeAudioKit](https://audiokit.io/SoundpipeAudioKit/) |
 | Drip                               | [SoundpipeAudioKit](https://audiokit.io/SoundpipeAudioKit/) |
@@ -94,28 +93,28 @@ Here is a list of types that moved into a new package, and where they live now.
 | Tremolo                            | [SoundpipeAudioKit](https://audiokit.io/SoundpipeAudioKit/) |
 | VariableDelay                      | [SoundpipeAudioKit](https://audiokit.io/SoundpipeAudioKit/) |
 | ZitaReverb                         | [SoundpipeAudioKit](https://audiokit.io/SoundpipeAudioKit/) |
-| OperationEffect                    | [SporthAudioKit](https://audiokit.io/SporthAudioKit/) |
-| OperationGenerator                 | [SporthAudioKit](https://audiokit.io/SporthAudioKit/) |
-| Clarinet                           | [STKAudioKit](https://audiokit.io/STKAudioKit/) |
-| Flute                              | [STKAudioKit](https://audiokit.io/STKAudioKit/) |
-| MandolinString                     | [STKAudioKit](https://audiokit.io/STKAudioKit/) |
-| RhodesPiano                        | [STKAudioKit](https://audiokit.io/STKAudioKit/) |
-| Shaker                             | [STKAudioKit](https://audiokit.io/STKAudioKit/) |
-| TubularBells                       | [STKAudioKit](https://audiokit.io/STKAudioKit/) |
+| OperationEffect                    | [SporthAudioKit](https://audiokit.io/SporthAudioKit/)       |
+| OperationGenerator                 | [SporthAudioKit](https://audiokit.io/SporthAudioKit/)       |
+| Clarinet                           | [STKAudioKit](https://audiokit.io/STKAudioKit/)             |
+| Flute                              | [STKAudioKit](https://audiokit.io/STKAudioKit/)             |
+| MandolinString                     | [STKAudioKit](https://audiokit.io/STKAudioKit/)             |
+| RhodesPiano                        | [STKAudioKit](https://audiokit.io/STKAudioKit/)             |
+| Shaker                             | [STKAudioKit](https://audiokit.io/STKAudioKit/)             |
+| TubularBells                       | [STKAudioKit](https://audiokit.io/STKAudioKit/)             |
 
 ## AudioKit 5.0 to 5.1
 
-The major change in AudioKit 5.1 is that the `Node` class was changed to be a `Node` protocol.  The parameters and parameter definition system was cleaned up as well. While these are big changes that warrant the version change, they shouldn't affect most users.
+The major change in AudioKit 5.1 is that the `Node` class was changed to be a `Node` protocol. The parameters and parameter definition system was cleaned up as well. While these are big changes that warrant the version change, they shouldn't affect most users.
 
 ## AudioKit 4.x to 5.0
 
-In order to ensure high quality for AudioKit 5, some parts of AudioKit 4 have been removed, so the first step in migrating to AudioKit 5 is to determine whether what you used in AudioKit 4 is still available. 
+In order to ensure high quality for AudioKit 5, some parts of AudioKit 4 have been removed, so the first step in migrating to AudioKit 5 is to determine whether what you used in AudioKit 4 is still available.
 
 ## Removed from v5
 
 So, first we'll start out with a list of things that are just not in AudioKit 5 in any form:
 
-1. AudioKit 5 has an `AudioPlayer` but doesn't include the AudioKit's 4's other players `AKDiskStreamer` , `AKWaveTable`, or  `AKClipPlayer`. Some of these classes had utility and could/should be brought back to AudioKit 5.
+1. AudioKit 5 has an `AudioPlayer` but doesn't include the AudioKit's 4's other players `AKDiskStreamer` , `AKWaveTable`, or `AKClipPlayer`. Some of these classes had utility and could/should be brought back to AudioKit 5.
 
 2. The oscillator banks such as `AKOscillatorBank` have all been removed. They were coded in a way that we have since outgrown. The only polyphonic node left is `Synth` but we intend on bringing back polyphonic instruments in a well-coded way as soon as possible.
 
@@ -131,57 +130,66 @@ The following items have been very significantly changed, even if their names ar
 
 1. AudioKit 4's file managing class `AKAudioFile` has been removed. We have found Apple's `AVAudioFile` sufficient for this purpose now. Format conversion is now handled by AudioKit 5's `FormatConverter`.
 
-2. AudioKit' 4's audio player `AKPlayer` and its associated `AKDynamicPlayer` and `AKAbstractPlayer` have all been removed. In its place we have `AudioPlayer` which is simpler. 
+2. AudioKit' 4's audio player `AKPlayer` and its associated `AKDynamicPlayer` and `AKAbstractPlayer` have all been removed. In its place we have `AudioPlayer` which is simpler.
 
-3. The following taps have been removed: `AKLazyTap`, `AKRenderTap` and `AKTimelineTap`. Instead, we have traditional AVAudioEngine style taps: `AmplitudeTap`, `PitchTap`,  and `RawDataTap`.
+3. The following taps have been removed: `AKLazyTap`, `AKRenderTap` and `AKTimelineTap`. Instead, we have traditional AVAudioEngine style taps: `AmplitudeTap`, `PitchTap`, and `RawDataTap`.
 
 ## Minor Changes in v5
 
 Next we have things that are different but rather trivial to reimplement (and very worthwhile to do so).
 
-1. The best way to use AudioKit 5 is to use Swift Package Manager. If you're hooked on Cocoapods, we still plan to provide Cocoapod versions, but we strongly encourage you to move to SPM. We have, and we do not regret it. 
+1. The best way to use AudioKit 5 is to use Swift Package Manager. If you're hooked on Cocoapods, we still plan to provide Cocoapod versions, but we strongly encourage you to move to SPM. We have, and we do not regret it.
 
 2. `AudioKitUI` is now a [separate package](https://github.com/AudioKit/AudioKitUI) that has AudioKit as a dependency.
 
 3. The AudioKit singleton no longer exists so instead of writing
+
 ```
 AudioKit.output = something
 AudioKit.start()
 AudioKit.stop()
 ```
+
 you'll need to create an instance of an AudioKit Engine:
+
 ```
 let engine = AudioEngine()
 engine.output = something
 engine.start()
 engine.stop()
 ```
+
 4. AudioKit 5 drops the `AK` prefix from class names.
 
 If you get errors like `Cannot find AKOscillator in scope` try `Oscillator` instead. If you already have defined an `Oscillator` class in your project, you can access AudioKit's oscillator with `AudioKit.Oscillator`.
 
-5. AudioKit 5 effects no longer take optional nodes on initialization. 
+5. AudioKit 5 effects no longer take optional nodes on initialization.
 
-In AudioKit 4 you could write `AKReverb()` but now you will have to write `Reverb(nodeYouWantToReverberate)`. One of the main reasons for this is that our audio engine is keeping track of the connections and now tightly enforces that you're not making any mistakes with dangling nodes not properly connected.  
+In AudioKit 4 you could write `AKReverb()` but now you will have to write `Reverb(nodeYouWantToReverberate)`. One of the main reasons for this is that our audio engine is keeping track of the connections and now tightly enforces that you're not making any mistakes with dangling nodes not properly connected.
 
 A side effect of this change is that the syntactical sugar of setting up your chain after initialization with the syntax `oscillator >>> reverb` is gone. To change your signal chain, even while the engine is running, use a `Mixer` and its `addInput` and `removeInput` methods.
 
-6. Ramp duration is no longer a property of AudioKit or even on AudioKit nodes. Instead, ramping parameters is much more flexible.  What used to be:
+6. Ramp duration is no longer a property of AudioKit or even on AudioKit nodes. Instead, ramping parameters is much more flexible. What used to be:
+
 ```
 oscillator.rampDuration = 0.2
 oscillator.amplitude = 0.9 // ramp to 0.9 over 0.2 seconds
 oscillator.frequency = 880 // ramp to 880 over 0.2 seconds
 ```
+
 is much more flexible:
+
 ```
 oscillator.$amplitude.ramp(to: 0.9, duration: 1.2)
 oscillator.$frequency.ramp(to: 880, duration: 1.7)
 ```
+
 Notice how ramping duration is independent for each parameter. And notice the parameter is a [property wrapper](https://docs.swift.org/swift-book/LanguageGuide/Properties.html#ID617) in this case, so it is prefixed by the dollar sign. Setting parameters like in the first code still works, but the changes are immediate, not ramped.
 
-7. In addition to all parameters on AudioKit nodes (except for the ones based off of Apple DSP) being rampable, they are also automatable.  By generating [piecewise linear](https://en.wikipedia.org/wiki/Piecewise_linear_function) curves, you can approximate all kinds of ramp curves or other time varying changes to the parameters.
+7. In addition to all parameters on AudioKit nodes (except for the ones based off of Apple DSP) being rampable, they are also automatable. By generating [piecewise linear](https://en.wikipedia.org/wiki/Piecewise_linear_function) curves, you can approximate all kinds of ramp curves or other time varying changes to the parameters.
 
 8. Microphone access has changed. There is no more `AKMicrophone` and instead you create a microphone as an `AudioEngine.InputNode` and instantiate on an engine you create:
+
 ```
 let engine = AudioEngine()
 let mic: AudioEngine.InputNode
@@ -190,9 +198,10 @@ init() {
     mic = engine.input
 }
 ```
+
 Also, `AKMicrophoneTracker` was removed. Using an `AudioEngine`'s `InputNode` along with a `PitchTap` is a better solution.
 
-9. All of the projects in the Examples for have been moved out of this repository. See the [Examples](Examples.md) documentary for links to the new repositories. 
+9. All of the projects in the Examples for have been moved out of this repository. See the [Examples](Examples.md) documentary for links to the new repositories.
 
 ## v4-v5 Class Name Changes
 
@@ -230,7 +239,7 @@ Also, `AKMicrophoneTracker` was removed. Using an `AudioEngine`'s `InputNode` al
 | AKClipRecorder                         | -                                  |                                                                                                                                                              |
 | AKClipper                              | Clipper                            | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
 | AKCombFilterReverb                     | CombFilterReverb                   | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
-| AKComponent                            | -                                  |                                                                                                                                                               |
+| AKComponent                            | -                                  |                                                                                                                                                              |
 | AKCompressor                           | Compressor                         | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
 | AKComputedParameter                    | ComputedParameter                  |                                                                                                                                                              |
 | AKConvolution                          | Convolution                        | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
@@ -357,7 +366,7 @@ Also, `AKMicrophoneTracker` was removed. Using an `AudioEngine`'s `InputNode` al
 | AKResonantFilter                       | ResonantFilter                     | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
 | AKResourcesAudioFileLoaderView         | -                                  | We have removed most of UI elements that were not specific to audio.                                                                                         |
 | AKReverb                               | Reverb                             | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
-| AKReverb2                              | -                                  | Errored in AudioKit 5 on  initialization. Could be resurrected by someone interested in doing so.                                                            |
+| AKReverb2                              | -                                  | Errored in AudioKit 5 on initialization. Could be resurrected by someone interested in doing so.                                                             |
 | AKRhinoGuitarProcessor                 | RhinoGuitarProcessor               | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
 | AKRhodesPiano                          | RhodesPiano                        |                                                                                                                                                              |
 | AKRingModulator                        | RingModulator                      | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
@@ -405,11 +414,10 @@ Also, `AKMicrophoneTracker` was removed. Using an `AudioEngine`'s `InputNode` al
 | AKWhiteNoise                           | WhiteNoise                         |                                                                                                                                                              |
 | AKZitaReverb                           | ZitaReverb                         | All effects need an input. ie. no more empty initialzers with connections defined later.                                                                     |
 | AudioKit                               | -                                  | This was a global singleton, instead create an instance of AudioEngine.                                                                                      |
-| AudioKitUI                             | -                                  | [Separate package](https://github.com/AudioKit/AudioKitUI)                                                                                                 |
+| AudioKitUI                             | -                                  | [Separate package](https://github.com/AudioKit/AudioKitUI)                                                                                                   |
 | ClipMergeDelegate                      | -                                  | Original programmer hired by Apple and not available for maintaining.                                                                                        |
 | ClipMergerError                        | -                                  | Original programmer hired by Apple and not available for maintaining.                                                                                        |
 | ClipRecordingError                     | -                                  | Original programmer hired by Apple and not available for maintaining.                                                                                        |
 | FileClip                               | -                                  | Original programmer hired by Apple and not available for maintaining.                                                                                        |
-| MultitouchGestureRecognizer            | MultitouchGestureRecognizer        |                                                                                       |
+| MultitouchGestureRecognizer            | MultitouchGestureRecognizer        |                                                                                                                                                              |
 | random(_:_:)                           | -                                  | Use AUValue's random(in:) method.                                                                                                                            |
-

@@ -180,4 +180,3 @@ class TapAudioUnit2: AUAudioUnit {
         // TODO: Allocate ring buffers for multichannel audio
     }
 }
-
