@@ -17,7 +17,7 @@ class RenderJob {
 private:
     /// Buffer we're writing to, unless overridden by buffer passed to render.
     std::shared_ptr<SynrchonizedAudioBufferList2> outputBuffer;
-    
+
     /// Block called to render.
     AURenderBlock renderBlock;
 
@@ -28,26 +28,26 @@ private:
     std::vector<int> inputIndices;
 
 public:
-    
+
     /// Indices of jobs that this one feeds.
     std::vector<int> outputIndices;
-    
+
     RenderJob(std::shared_ptr<SynrchonizedAudioBufferList2> outputBuffer,
               AURenderBlock renderBlock,
               AURenderPullInputBlock inputBlock,
               std::vector<int> inputIndices)
-    : outputBuffer(outputBuffer), renderBlock(renderBlock), inputBlock(inputBlock), inputIndices(inputIndices) {
+        : outputBuffer(outputBuffer), renderBlock(renderBlock), inputBlock(inputBlock), inputIndices(inputIndices) {
     }
 
     /// Number of inputs feeding this AU.
     int32_t inputCount() {
         return static_cast<int32_t>(inputIndices.size());
-    } 
+    }
 
     void render(AudioUnitRenderActionFlags* actionFlags, const AudioTimeStamp* timeStamp, AUAudioFrameCount frameCount, AudioBufferList* outputBufferList=nullptr) {
-        
+
         AudioBufferList* out = outputBufferList ? outputBufferList : outputBuffer->abl;
-        
+
         // AUs may change the output size, so reset it.
         out->mBuffers[0].mDataByteSize = frameCount * sizeof(float);
         out->mBuffers[1].mDataByteSize = frameCount * sizeof(float);
@@ -58,21 +58,21 @@ public:
         // Propagate errors.
         if (status != noErr) {
             switch (status) {
-                case kAudioUnitErr_NoConnection:
-                    printf("got kAudioUnitErr_NoConnection\n");
-                    break;
-                case kAudioUnitErr_TooManyFramesToProcess:
-                    printf("got kAudioUnitErr_TooManyFramesToProcess\n");
-                    break;
-                case AVAudioEngineManualRenderingErrorNotRunning:
-                    printf("got AVAudioEngineManualRenderingErrorNotRunning\n");
-                    break;
-                case kAudio_ParamError:
-                    printf("got kAudio_ParamError\n");
-                    break;
-                default:
-                    printf("unkown rendering error\n");
-                    break;
+            case kAudioUnitErr_NoConnection:
+                printf("got kAudioUnitErr_NoConnection\n");
+                break;
+            case kAudioUnitErr_TooManyFramesToProcess:
+                printf("got kAudioUnitErr_TooManyFramesToProcess\n");
+                break;
+            case AVAudioEngineManualRenderingErrorNotRunning:
+                printf("got AVAudioEngineManualRenderingErrorNotRunning\n");
+                break;
+            case kAudio_ParamError:
+                printf("got kAudio_ParamError\n");
+                break;
+            default:
+                printf("unkown rendering error\n");
+                break;
             }
         }
 

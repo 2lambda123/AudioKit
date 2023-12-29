@@ -10,11 +10,13 @@ namespace AudioKit {
 
 template <typename T> class RingBuffer {
 
-  public:
+public:
     RingBuffer(size_t n = 1024)
         : ring_(new T[n]), head_(0), tail_(0), _size(n) {}
 
-    ~RingBuffer() { delete[] ring_; }
+    ~RingBuffer() {
+        delete[] ring_;
+    }
 
     bool push(const T &value) {
         size_t head = head_.load(std::memory_order_relaxed);
@@ -72,8 +74,10 @@ template <typename T> class RingBuffer {
         return avail;
     }
 
-  private:
-    size_t next(size_t current) { return (current + 1) % _size; }
+private:
+    size_t next(size_t current) {
+        return (current + 1) % _size;
+    }
 
     size_t write_available(size_t head, size_t tail) const {
         size_t ret = tail - head - 1;

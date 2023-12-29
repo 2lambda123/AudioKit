@@ -14,24 +14,24 @@ void processRenderEvents(AURenderEvent* events,
                          MidiFunc midiFunc,
                          SysexFunc sysexFunc,
                          ParamFunc paramFunc) {
-    
+
     while(events) {
         switch(events->head.eventType) {
-            case AURenderEventMIDI:
-                midiFunc(&events->MIDI);
-                break;
-            case AURenderEventMIDISysEx:
-                sysexFunc(&events->MIDI);
-                break;
-            case AURenderEventParameter:
-                paramFunc(&events->parameter);
-                break;
-            case AURenderEventParameterRamp:
-                paramFunc(&events->parameter);
-                break;
-            case AURenderEventMIDIEventList:
-                midiFunc(&events->MIDI);
-                break;
+        case AURenderEventMIDI:
+            midiFunc(&events->MIDI);
+            break;
+        case AURenderEventMIDISysEx:
+            sysexFunc(&events->MIDI);
+            break;
+        case AURenderEventParameter:
+            paramFunc(&events->parameter);
+            break;
+        case AURenderEventParameterRamp:
+            paramFunc(&events->parameter);
+            break;
+        case AURenderEventMIDIEventList:
+            midiFunc(&events->MIDI);
+            break;
         }
         events = events->head.next;
     }
